@@ -8,8 +8,8 @@
 		"Eevee"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://eevee-site.vercel.app/",
+		"sources": "https://github.com/Thesupereevee1/immortality-mc-mod/"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/immortality/icon.png",
@@ -25,7 +25,7 @@
 	"mixins": [],
 	"depends": {
 		"fabricloader": ">=0.18.6",
-		"minecraft": "~1.21.11",
+		"minecraft": "~1.21.10",
 		"java": ">=21",
 		"fabric-api": "*"
 	}
