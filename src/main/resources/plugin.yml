@@ -1,0 +1,13 @@
+name: Immortality
+version: 1.0
+main: eevee.immortality.ImmortalityPlugin
+api-version: "1.21"
+
+commands:
+  immortal:
+    description: Immortality control command
+    usage: /immortal
+
+permissions:
+  immortality.admin:
+    default: op
