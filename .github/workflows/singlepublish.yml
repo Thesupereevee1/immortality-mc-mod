@@ -1,0 +1,98 @@
+name: Build and Publish Single Immortality Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      minecraft_version:
+        description: "Minecraft version to publish"
+        required: true
+        type: choice
+        options:
+          - "1.21.10"
+          - "1.21.11"
+          - "26.1"
+          - "26.2"
+          - "26.3"
+
+      mod_version:
+        description: "Mod version number (example: 1.2.0)"
+        required: true
+        default: "1.0.0"
+        type: string
+
+      release_name:
+        description: "Release title"
+        required: true
+        default: "Immortality"
+        type: string
+
+      subtitle:
+        description: "Subtitle (optional)"
+        required: false
+        default: ""
+        type: string
+
+      version_type:
+        description: "Release type"
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+
+      changelog:
+        description: "What's new? (optional)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    name: Minecraft ${{ inputs.minecraft_version }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build mod
+        run: |
+          chmod +x gradlew
+          ./gradlew ":${{ inputs.minecraft_version }}:build"
+
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: ii0DFR8F
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          name: "${{ inputs.release_name }}${{ inputs.subtitle != '' && format(' - {0}', inputs.subtitle) || '' }} - Minecraft ${{ inputs.minecraft_version }}"
+          version: "${{ inputs.mod_version }}+${{ inputs.minecraft_version }}"
+          version-type: ${{ inputs.version_type }}
+          changelog: ${{ inputs.changelog }}
+
+          files: |
+            versions/${{ inputs.minecraft_version }}/build/libs/*+${{ inputs.minecraft_version }}.jar
+
+          loaders: |
+            fabric
+
+          game-versions: |
+            ${{ inputs.minecraft_version }}
+
+          game-version-filter: none
+          fail-mode: fail
