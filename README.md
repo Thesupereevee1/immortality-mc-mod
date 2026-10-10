@@ -1,25 +1,65 @@
-# Stonecutter Fabric template
-## Setup
-1. Review the supported Minecraft versions in `settings.gradle.kts`.
-   For new entries, add `versions/.../gradle.properties` with the same keys as other versions.
-2. Change `mod.group`, `mod.id` and `mod.name` properties in `gradle.properties`.
-3. Rename `com.example` package in `src/main/java`.
-4. Rename `src/main/resources/template.mixins.json` to use your mod's id.
-5. Review the `LICENSE` file. 
-   See the [license decision diagram](https://docs.codeberg.org/getting-started/licensing/#license-decision-diagram) for common options.
-6. Review `src/main/resources/fabric.mod.json` to have up-to-date properties.
+## 🛡️ Immortality
 
-## Usage
-- Use `"Set active project to ..."` Gradle tasks to update the Minecraft version
-  available in `src/` classes.
-- Use `buildAndCollect` Gradle task to store mod releases in `build/libs/`.
-- Enable `mod-publish-plugin` in `stonecutter.gradle.kts` and `build.gradle.kts`
-  and the corresponding code blocks to publish releases to Modrinth and Curseforge.
-- Enable `maven-publish` in `build.gradle.kts` and the corresponding code block
-  to publish releases to a personal maven repository.
+Take control over death itself.
 
-## Useful links
-- [Stonecutter beginner's guide](https://stonecutter.kikugie.dev/wiki/start/): *spoiler: you* ***need*** *to understand how it works!*
-- [Fabric Discord server](https://discord.gg/v6v4pMv): for mod development help.
-- [Stonecutter Discord server](https://discord.kikugie.dev/): for Stonecutter and Gradle help.
-- [How To Ask Questions - the guide](http://www.catb.org/esr/faqs/smart-questions.html): also in [video form](https://www.youtube.com/results?search_query=How+To+Ask+Questions+The+Smart+Way).
+**Immortality** is a lightweight server-side Fabric mod that lets you decide who lives… and who doesn’t. Grant players the power to survive fatal damage, manage immortality with simple commands, and keep everything persistent across server restarts.
+
+---
+
+## ✨ Features
+
+- **Per-player immortality**
+  - Toggle immortality for yourself or any player
+
+- **Mass control**
+  - Use selectors like `@a`, `@p`, etc. to affect multiple players at once
+
+- **Global immortality mode**
+  - Instantly make *everyone* immortal
+
+- **Totem compatibility**
+  - Totems work normally and are never overridden
+
+- **Persistent data**
+  - Player immortality is saved and restored automatically
+
+- **Simple & lightweight**
+  - No configs required, no client install needed
+
+---
+
+## ⚔️ Commands
+
+- `/immortal`  
+  Toggle immortality for yourself  
+
+- `/immortal set <player> <true|false>`  
+  Set immortality for one or more players  
+
+- `/immortal get <player>`  
+  Check if a player is immortal  
+
+- `/immortal global`  
+  Toggle global immortality  
+
+---
+
+## 🧠 How It Works
+
+When a player would normally die, the mod intercepts the event and keeps them alive at **Half a Heart** unless they’re not marked as immortal.
+
+If the player is holding a Totem of Undying, the game handles it normally.
+
+---
+
+## 🔧 Use Cases
+
+- Scripted servers
+- God mode for specific players  
+
+---
+
+## 💾 Data Storage
+
+Immortality states are saved in:config/immortality.json
+
