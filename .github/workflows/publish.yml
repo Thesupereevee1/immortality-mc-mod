@@ -4,15 +4,21 @@ on:
   workflow_dispatch:
     inputs:
       mod_version:
-        description: "Mod version (example: 1.2.0)"
+        description: "Mod version number (example: 1.2.0)"
         required: true
         default: "1.0.0"
         type: string
 
       release_name:
-        description: "Release name"
+        description: "Release title"
         required: true
         default: "Immortality"
+        type: string
+
+      subtitle:
+        description: "Subtitle (optional)"
+        required: false
+        default: ""
         type: string
 
       version_type:
@@ -26,9 +32,9 @@ on:
           - alpha
 
       changelog:
-        description: "What's new in this release?"
-        required: true
-        default: "Bug fixes and improvements."
+        description: "What's new? (optional)"
+        required: false
+        default: ""
         type: string
 
 permissions:
@@ -72,7 +78,7 @@ jobs:
           modrinth-id: ii0DFR8F
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
-          name: "${{ inputs.release_name }} ${{ inputs.mod_version }} - Minecraft ${{ matrix.minecraft }}"
+          name: "${{ inputs.release_name }}${{ inputs.subtitle != '' && format(' - {0}', inputs.subtitle) || '' }} - Minecraft ${{ matrix.minecraft }}"
           version: "${{ inputs.mod_version }}+${{ matrix.minecraft }}"
           version-type: ${{ inputs.version_type }}
           changelog: ${{ inputs.changelog }}
