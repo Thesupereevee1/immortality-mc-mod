@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "eevee.immortality.mixin",
+  "compatibilityLevel": "${java}",
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
