@@ -2,6 +2,34 @@ name: Build and Publish Immortality
 
 on:
   workflow_dispatch:
+    inputs:
+      mod_version:
+        description: "Mod version (example: 1.2.0)"
+        required: true
+        default: "1.0.0"
+        type: string
+
+      release_name:
+        description: "Release name"
+        required: true
+        default: "Immortality"
+        type: string
+
+      version_type:
+        description: "Release type"
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+
+      changelog:
+        description: "What's new in this release?"
+        required: true
+        default: "Bug fixes and improvements."
+        type: string
 
 permissions:
   contents: read
@@ -16,13 +44,9 @@ jobs:
       matrix:
         include:
           - minecraft: "1.21.10"
-            java: "21"
           - minecraft: "1.21.11"
-            java: "21"
           - minecraft: "26.2"
-            java: "25"
           - minecraft: "26.3"
-            java: "25"
 
     steps:
       - name: Checkout repository
@@ -45,12 +69,13 @@ jobs:
       - name: Publish to Modrinth
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          modrinth-id: YOUR_MODRINTH_PROJECT_ID
+          modrinth-id: ii0DFR8F
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
-          name: Immortality for Minecraft ${{ matrix.minecraft }}
-          version: ${{ github.event.release.tag_name || 'manual' }}+${{ matrix.minecraft }}
-          version-type: release
+          name: "${{ inputs.release_name }} ${{ inputs.mod_version }} - Minecraft ${{ matrix.minecraft }}"
+          version: "${{ inputs.mod_version }}+${{ matrix.minecraft }}"
+          version-type: ${{ inputs.version_type }}
+          changelog: ${{ inputs.changelog }}
 
           files: |
             versions/${{ matrix.minecraft }}/build/libs/*+${{ matrix.minecraft }}.jar
